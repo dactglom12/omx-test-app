@@ -21,12 +21,13 @@ const mockOrders: Order[] = [
 
 export const OrdersPage: React.FC = () => {
   const [isScanModalOpen, setIsScanModalOpen] = useState(false);
+  const [barcodes, setBarcodes] = useState<string[]>([]);
 
   const openModal = () => setIsScanModalOpen(true);
   const closeModal = () => setIsScanModalOpen(false);
 
-  const onSuccessfulScan = (result: unknown) => {
-    console.log(result);
+  const onSuccessfulScan = (result: any) => {
+    setBarcodes((barcodes) => [...barcodes, result.text]);
   };
 
   const onErrorScan = (error: unknown) => {
@@ -37,6 +38,9 @@ export const OrdersPage: React.FC = () => {
     <>
       <PageTemplate>
         <Grid container spacing={2}>
+          {barcodes.map((code) => (
+            <p>{code}</p>
+          ))}
           <Grid item xs={12}>
             <Button onClick={openModal} fullWidth variant="outlined">
               Scan or type in barcode
